@@ -1,0 +1,27 @@
+.form-container {
+  border-radius: 5px;
+  border: 2px solid darkcyan;
+  padding: 10px;
+}
+
+input,
+textarea {
+  width: 100%;
+  margin: 5px 0 10px 0;
+}
+
+.form-elements {
+  display: flex;
+  flex-direction: column;
+
+}
+
+.form-field {
+
+
+}
+
+.action {
+  text-align: right;
+  padding-top: 10px;
+}

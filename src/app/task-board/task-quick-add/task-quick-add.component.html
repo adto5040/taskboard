@@ -1,1 +1,20 @@
-<p>task-quick-add works!</p>
+<div class='form-container'>
+  <form [formGroup]="addTaskForm" (ngSubmit)="onSubmit()">
+    <div class='form-elements'>
+      <div class='form-field'>
+        <label for="summary">Summary</label>
+        <input id="summary" type="text" formControlName="summary">
+      </div>
+
+      <div class='form-field'>
+        <label for="description">Description</label>
+        <textarea id="description" type="text" formControlName="description"></textarea>
+      </div>
+
+      <div class='action'>
+        <button class='button' type="submit" [disabled]="!addTaskForm.valid">Add Task</button>
+      </div>
+    </div>
+  </form>
+</div>
+

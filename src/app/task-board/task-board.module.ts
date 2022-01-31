@@ -5,6 +5,7 @@ import { TaskQuickAddComponent } from './task-quick-add/task-quick-add.component
 import { TaskListComponent } from './task-list/task-list.component';
 import { TaskCardComponent } from './task-card/task-card.component';
 import { TaskBoardRoutingModule } from './task-board-routing.module';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 
@@ -17,7 +18,8 @@ import { TaskBoardRoutingModule } from './task-board-routing.module';
   ],
   imports: [
     CommonModule,
-    TaskBoardRoutingModule
+    TaskBoardRoutingModule,
+    ReactiveFormsModule
   ]
 })
 export class TaskBoardModule { }

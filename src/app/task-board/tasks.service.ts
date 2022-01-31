@@ -19,18 +19,30 @@ export class TasksService {
       state: TaskState.TODO,
       id: '1232',
       summary: 'First TODO 2 2 '
+    },
+    {
+      description: 'Something',
+      state: TaskState.DOING,
+      id: '123212',
+      summary: 'Do something'
+    },
+    {
+      description: 'Done Stuff',
+      state: TaskState.DONE,
+      id: '1232123',
+      summary: 'Do this to done'
     }];
 
-  tasksChanged = new Subject<Task[]>();
+  tasksChanged$$ = new Subject<Task[]>();
 
   constructor() { }
 
   tasksChangedUpdate() {
-    this.tasksChanged.next(this.tasks.slice());
+    this.tasksChanged$$.next(this.tasks.slice());
   }
 
-  getTasks(state: TaskState): Task[] {
-    return this.tasks.filter(task => task.state === state);
+  getTasks(): Task[] {
+    return this.tasks.slice();
   }
 
   createTask(task: Task) {

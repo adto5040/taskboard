@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { TasksService } from '../tasks.service';
 import { TaskState } from '../task-state.enum';
+import { Task } from '../task.model';
 
 @Component({
   selector: 'tb-task-quick-add',
@@ -9,24 +9,27 @@ import { TaskState } from '../task-state.enum';
   styleUrls: ['./task-quick-add.component.scss']
 })
 export class TaskQuickAddComponent implements OnInit {
+  @Output() addTask = new EventEmitter<Task>();
+
   addTaskForm = new FormGroup({
     summary: new FormControl('', Validators.required),
     description: new FormControl('', Validators.required)
   });
 
-  constructor(private tasksService: TasksService) { }
+  constructor() { }
 
   ngOnInit(): void {
   }
 
   onSubmit() {
     if (this.addTaskForm.valid) {
-      this.tasksService.createTask({
+      this.addTask.emit({
         id: '',
         description: this.addTaskForm.value.description,
         summary: this.addTaskForm.value.summary,
         state: TaskState.TODO
       });
+      this.addTaskForm.reset();
     }
   }
 }

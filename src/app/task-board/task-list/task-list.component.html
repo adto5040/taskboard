@@ -3,5 +3,6 @@
   <tb-task-card
     *ngFor='let task of tasks'
     [task]='task'
-    (deleteItem)='onDelete($event)'></tb-task-card>
+    (deleteTask)='onDelete($event)'
+    (editTask)='onEdit($event)'></tb-task-card>
 </div>

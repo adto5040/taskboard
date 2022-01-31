@@ -8,7 +8,8 @@ import { Task } from '../task.model';
 })
 export class TaskCardComponent implements OnInit {
   @Input() task!: Task;
-  @Output() deleteItem = new EventEmitter<string>();
+  @Output() deleteTask = new EventEmitter<string>();
+  @Output() editTask = new EventEmitter<Task>();
 
   constructor() { }
 
@@ -16,6 +17,10 @@ export class TaskCardComponent implements OnInit {
   }
 
   onDelete() {
-    this.deleteItem.emit(this.task.id);
+    this.deleteTask.emit(this.task.id);
+  }
+
+  onEdit() {
+    this.editTask.emit(this.task);
   }
 }

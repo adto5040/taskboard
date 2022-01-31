@@ -10,7 +10,7 @@ import { TaskState } from '../task-state.enum';
 })
 export class TaskQuickAddComponent implements OnInit {
   addTaskForm = new FormGroup({
-    summary: new FormControl('wtf', Validators.required),
+    summary: new FormControl('', Validators.required),
     description: new FormControl('', Validators.required)
   });
 
@@ -22,7 +22,7 @@ export class TaskQuickAddComponent implements OnInit {
   onSubmit() {
     if (this.addTaskForm.valid) {
       this.tasksService.createTask({
-        id: null,
+        id: '',
         description: this.addTaskForm.value.description,
         summary: this.addTaskForm.value.summary,
         state: TaskState.TODO

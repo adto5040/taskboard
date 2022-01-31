@@ -1,3 +1,7 @@
 <div class='container'>
-  <h2>{{ state }}</h2>
+  <h2 class='center'>{{ state }}</h2>
+  <tb-task-card
+    *ngFor='let task of tasks'
+    [task]='task'
+    (deleteItem)='onDelete($event)'></tb-task-card>
 </div>

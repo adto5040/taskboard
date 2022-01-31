@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { TaskState } from './task-state.enum';
 
 @Component({
   selector: 'tb-task-board',
@@ -6,6 +7,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./task-board.component.scss']
 })
 export class TaskBoardComponent implements OnInit {
+  taskStates: TaskState[] = Object.values(TaskState);
 
   constructor() { }
 

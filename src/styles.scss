@@ -27,6 +27,20 @@ h1 {
   font-weight: lighter;
 }
 
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(3, 33%);
+  grid-column-gap: 10px;
+  padding-top: 2em;
+}
+
+.container {
+  border-radius: 5px;
+  border: 2px solid var(--background-dark);
+  padding: 10px;
+  max-width: 400px;
+}
+
 .button {
   padding: 0.5em 1em;
   text-align: center;

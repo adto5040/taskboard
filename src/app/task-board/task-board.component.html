@@ -1,2 +1,4 @@
 <tb-task-quick-add></tb-task-quick-add>
-<tb-task-list></tb-task-list>
+<div class='grid-container'>
+  <tb-task-list *ngFor='let taskState of taskStates' [state]='taskState'></tb-task-list>
+</div>

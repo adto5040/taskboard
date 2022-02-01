@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { TaskState } from '../task-state.enum';
 import { Task } from '../task.model';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'tb-task-list',
@@ -8,15 +9,14 @@ import { Task } from '../task.model';
   styleUrls: ['./task-list.component.scss']
 })
 export class TaskListComponent implements OnInit {
-  @Input() state: TaskState = TaskState.TODO;
-  @Input() tasks: Task[] = [];
+  @Input() state!: TaskState;
+  @Input() tasks$!: Observable<Task[]>;
   @Output() deleteTask = new EventEmitter<string>();
   @Output() editTask = new EventEmitter<Task>();
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   onDelete(id: string) {
     this.deleteTask.emit(id);

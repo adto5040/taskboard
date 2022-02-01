@@ -1,19 +1,20 @@
 import { Injectable } from '@angular/core';
 import { Task } from './task.model';
 import { TaskState } from './task-state.enum';
-import { Subject } from 'rxjs';
+import { BehaviorSubject, Observable, shareReplay } from 'rxjs';
 import { Guid } from 'guid-typescript';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TasksService {
-  private tasks: Task[] = [{
-    description: 'Test description',
-    state: TaskState.TODO,
-    id: '123',
-    summary: 'First TODO'
-  },
+  private tasks$$: BehaviorSubject<Task[]> = new BehaviorSubject<Task[]>([
+    {
+      description: 'Test description',
+      state: TaskState.TODO,
+      id: '123',
+      summary: 'First TODO'
+    },
     {
       description: 'Test description2',
       state: TaskState.TODO,
@@ -31,24 +32,22 @@ export class TasksService {
       state: TaskState.DONE,
       id: '1232123',
       summary: 'Do this to done'
-    }];
+    }
+  ]);
 
-  tasksChanged$$ = new Subject<Task[]>();
+  constructor() {}
 
-  constructor() { }
-
-  tasksChangedUpdate() {
-    this.tasksChanged$$.next(this.tasks.slice());
-  }
-
-  getTasks(): Task[] {
-    return this.tasks.slice();
+  getTasks$(): Observable<Task[]> {
+    return this.tasks$$.pipe(shareReplay({ bufferSize: 1, refCount: true }));
   }
 
   createTask(task: Task) {
     const guid = Guid.raw();
-    this.tasks.push({...task, id: guid, state: TaskState.TODO});
-    this.tasksChangedUpdate();
+    this.tasks$$.next([
+      // Geht das auch anders?
+      ...this.tasks$$.getValue(),
+      { ...task, id: guid, state: TaskState.TODO }
+    ]);
   }
 
   updateTask(task: Task) {
@@ -57,10 +56,9 @@ export class TasksService {
   }
 
   deleteTask(id: string) {
-    const idx = this.tasks.findIndex(task => task.id === id);
-    if (idx > -1) {
-      this.tasks.splice(idx, 1);
-      this.tasksChangedUpdate();
-    }
+    this.tasks$$.next([
+      // Hier auch wieder getValue(), geht das anders?
+      ...this.tasks$$.getValue().filter(task => task.id !== id)
+    ]);
   }
 }

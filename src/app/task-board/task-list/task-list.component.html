@@ -1,7 +1,7 @@
 <div class='container'>
   <h2 class='center'>{{ state }}</h2>
   <tb-task-card
-    *ngFor='let task of tasks'
+    *ngFor='let task of tasks$ | async'
     [task]='task'
     (deleteTask)='onDelete($event)'
     (editTask)='onEdit($event)'></tb-task-card>

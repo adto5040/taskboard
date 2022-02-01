@@ -1,53 +1,69 @@
 import { Injectable } from '@angular/core';
 import { Task } from './task.model';
 import { TaskState } from './task-state.enum';
-import { BehaviorSubject, Observable, shareReplay } from 'rxjs';
+import { map, merge, Observable, scan, shareReplay, Subject } from 'rxjs';
 import { Guid } from 'guid-typescript';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TasksService {
-  private tasks$$: BehaviorSubject<Task[]> = new BehaviorSubject<Task[]>([
+  private initTasks = [
     {
+      summary: 'First TODO',
       description: 'Test description',
       state: TaskState.TODO,
-      id: '123',
-      summary: 'First TODO'
+      id: Guid.raw()
     },
     {
-      description: 'Test description2',
+      summary: 'Just do it',
+      description: 'Another test description',
       state: TaskState.TODO,
-      id: '1232',
-      summary: 'First TODO 2 2 '
+      id: Guid.raw()
     },
     {
-      description: 'Something',
+      summary: 'Just do it',
+      description: "I'm currently working on that",
       state: TaskState.DOING,
-      id: '123212',
-      summary: 'Do something'
+      id: Guid.raw()
     },
     {
-      description: 'Done Stuff',
+      summary: 'Finish it',
+      description: 'This should be finished',
       state: TaskState.DONE,
-      id: '1232123',
-      summary: 'Do this to done'
+      id: Guid.raw()
     }
-  ]);
+  ];
+
+  // Functions that mutate the state/data aggregation
+  private add = (task: Task) => (tasks: Task[]) => [...tasks, task];
+  private removeAtIndex = (id: string) => (tasks: Task[]) =>
+    tasks.filter(task => task.id !== id);
+  private deleteAll = () => () => [];
+
+  // Subject that represents the specific event
+  private add$$ = new Subject<Task>();
+  private removeAtIndex$$ = new Subject<string>();
+  private deleteAll$$ = new Subject<void>();
+
+  private tasks$ = merge(
+    // Applies the first (outer) mutate function to your event Subject
+    this.add$$.pipe(map(this.add)),
+    this.removeAtIndex$$.pipe(map(this.removeAtIndex)),
+    this.deleteAll$$.pipe(map(this.deleteAll))
+  ).pipe(
+    // Applies the second (inner) mutate function to finally mutate and return your updated state
+    scan((tasks: Task[], fn) => fn(tasks), this.initTasks)
+  );
 
   constructor() {}
 
   getTasks$(): Observable<Task[]> {
-    return this.tasks$$.pipe(shareReplay({ bufferSize: 1, refCount: true }));
+    return this.tasks$.pipe(shareReplay({ bufferSize: 1, refCount: true }));
   }
 
   createTask(task: Task) {
-    const guid = Guid.raw();
-    this.tasks$$.next([
-      // Geht das auch anders?
-      ...this.tasks$$.getValue(),
-      { ...task, id: guid, state: TaskState.TODO }
-    ]);
+    this.add$$.next({ ...task, id: Guid.raw(), state: TaskState.TODO });
   }
 
   updateTask(task: Task) {
@@ -56,9 +72,10 @@ export class TasksService {
   }
 
   deleteTask(id: string) {
-    this.tasks$$.next([
-      // Hier auch wieder getValue(), geht das anders?
-      ...this.tasks$$.getValue().filter(task => task.id !== id)
-    ]);
+    this.removeAtIndex$$.next(id);
+  }
+
+  deleteAllTasks() {
+    this.deleteAll$$.next();
   }
 }

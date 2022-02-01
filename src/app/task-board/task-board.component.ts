@@ -10,15 +10,17 @@ import { Task } from './task.model';
   styleUrls: ['./task-board.component.scss']
 })
 export class TaskBoardComponent implements OnInit {
+  showDeleteButton = false;
+
   tasks$: Observable<Task[]> = this.tasksService.getTasks$();
   tasksTodo$: Observable<Task[]> = this.tasks$.pipe(
-    map(tasks => tasks.filter(task => task.state === TaskState.TODO))
+    this.filterState(TaskState.TODO)
   );
   tasksDoing$: Observable<Task[]> = this.tasks$.pipe(
-    map(tasks => tasks.filter(task => task.state === TaskState.DOING))
+    this.filterState(TaskState.DOING)
   );
   tasksDone$: Observable<Task[]> = this.tasks$.pipe(
-    map(tasks => tasks.filter(task => task.state === TaskState.DONE))
+    this.filterState(TaskState.DONE)
   );
   TaskState = TaskState;
 
@@ -36,5 +38,13 @@ export class TaskBoardComponent implements OnInit {
 
   onEdit(task: Task) {
     this.tasksService.updateTask(task);
+  }
+
+  onDeleteAllTasks() {
+    this.tasksService.deleteAllTasks();
+  }
+
+  private filterState(state: TaskState) {
+    return map((tasks: Task[]) => tasks.filter(task => task.state === state));
   }
 }

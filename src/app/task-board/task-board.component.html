@@ -1,18 +1,29 @@
-<tb-task-quick-add (addTask)='onAdd($event)'></tb-task-quick-add>
-<div class='grid-container'>
-  <tb-task-list [tasks$]='tasksTodo$'
-                [state]='TaskState.TODO'
-                (deleteTask)='onDelete($event)'
-                (editTask)='onEdit($event)'
+<tb-task-quick-add (addTask)="onAdd($event)"></tb-task-quick-add>
+<div class="grid-container">
+  <tb-task-list
+    [tasks$]="tasksTodo$"
+    [state]="TaskState.TODO"
+    (deleteTask)="onDelete($event)"
+    (editTask)="onEdit($event)"
   ></tb-task-list>
-  <tb-task-list [tasks$]='tasksDoing$'
-                [state]='TaskState.DOING'
-                (deleteTask)='onDelete($event)'
-                (editTask)='onEdit($event)'
+  <tb-task-list
+    [tasks$]="tasksDoing$"
+    [state]="TaskState.DOING"
+    (deleteTask)="onDelete($event)"
+    (editTask)="onEdit($event)"
   ></tb-task-list>
-  <tb-task-list [tasks$]='tasksDone$'
-                [state]='TaskState.DONE'
-                (deleteTask)='onDelete($event)'
-                (editTask)='onEdit($event)'
+  <tb-task-list
+    [tasks$]="tasksDone$"
+    [state]="TaskState.DONE"
+    (deleteTask)="onDelete($event)"
+    (editTask)="onEdit($event)"
   ></tb-task-list>
 </div>
+<button
+  style='margin-top: 2em;'
+  class="button button-danger"
+  (click)="onDeleteAllTasks()"
+  *ngIf="showDeleteButton"
+>
+  Delete All Tasks
+</button>

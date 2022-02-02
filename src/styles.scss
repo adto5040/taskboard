@@ -72,6 +72,18 @@ p {
   border: 2px solid var(--background-dark);
 }
 
+.button.button-invert {
+  color: white;
+  background-color: var(--background-dark);
+  border: 2px solid white;
+}
+
+.button.button-invert:hover {
+  color: black;
+  background-color: white;
+  border: 2px solid white;
+}
+
 .button:hover {
   background-color: var(--background-dark);
   color: white;
@@ -81,6 +93,17 @@ p {
   border: 2px solid var(--danger);
 }
 
+.button-danger.button-invert {
+  background-color: var(--background-dark);
+  border: 2px solid var(--danger);
+}
+
+.button-danger.button-invert:hover {
+  background-color: var(--danger);
+  border: 2px solid var(--danger);
+  color: white;
+}
+
 .button-danger:hover {
   background-color: var(--danger);
   color: white;
@@ -88,4 +111,14 @@ p {
 
 .center {
  text-align: center;
+}
+
+.active {
+  background-color: var(--background-dark) !important;
+  color: white;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
 }

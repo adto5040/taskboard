@@ -1,0 +1,18 @@
+<form [formGroup]="editTaskForm" (ngSubmit)="onSubmit()">
+  <div class="form-field">
+    <input id="title" type="text" formControlName="title" />
+  </div>
+
+  <div class="form-field">
+    <textarea id="text" type="text" formControlName="text"></textarea>
+  </div>
+
+  <div class="action">
+    <button class="button button-danger button-invert" type="button" (click)="onCancel()">
+      Cancel
+    </button>
+    <button class="button button-invert" type="submit" [disabled]="!editTaskForm.valid">
+      Save
+    </button>
+  </div>
+</form>

@@ -6,20 +6,22 @@ import { TaskListComponent } from './task-list/task-list.component';
 import { TaskCardComponent } from './task-card/task-card.component';
 import { TaskBoardRoutingModule } from './task-board-routing.module';
 import { ReactiveFormsModule } from '@angular/forms';
-
-
+import { HttpClientModule } from '@angular/common/http';
+import { TaskEditComponent } from './task-edit/task-edit.component';
 
 @NgModule({
   declarations: [
     TaskBoardComponent,
     TaskQuickAddComponent,
     TaskListComponent,
-    TaskCardComponent
+    TaskCardComponent,
+    TaskEditComponent
   ],
   imports: [
     CommonModule,
     TaskBoardRoutingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    HttpClientModule
   ]
 })
-export class TaskBoardModule { }
+export class TaskBoardModule {}

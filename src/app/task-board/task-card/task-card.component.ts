@@ -10,6 +10,7 @@ export class TaskCardComponent implements OnInit {
   @Input() task!: Task;
   @Output() deleteTask = new EventEmitter<string>();
   @Output() editTask = new EventEmitter<Task>();
+  editMode = false;
 
   constructor() {}
 
@@ -19,7 +20,11 @@ export class TaskCardComponent implements OnInit {
     this.deleteTask.emit(this.task.guid);
   }
 
-  onEdit() {
-    this.editTask.emit(this.task);
+  onSelect() {
+    this.editMode = true;
+  }
+
+  onUpdate(task: Task) {
+    this.editTask.emit(task);
   }
 }

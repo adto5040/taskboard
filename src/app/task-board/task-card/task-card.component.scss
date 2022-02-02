@@ -1,12 +1,38 @@
 .card {
   position: relative;
   padding-left: 1em;
-  margin: 5px 0 5px 0;
+  margin: 0.25em 0 0.25em 0;
   border-radius: 5px;
   border: 2px solid var(--background-dark);
   cursor: pointer;
   background-color: var(--background-light);
   transition: all 0.15s ease-in-out;
+}
+
+.stage {
+  position: absolute;
+  opacity: 0;
+  transition: all 0.15s ease-in-out;
+  z-index: 100;
+  color: black;
+  background-color: white;
+  padding: 0.25em 0.5em 0.25em 0.5em;
+  border: 2px solid var(--background-dark);
+  border-radius: 5px;
+  height: 0;
+}
+
+.next-stage {
+  left: 9.5em;
+}
+
+.stage:hover {
+  color: var(--background-dark)
+}
+
+.card:hover .stage {
+  opacity: 1;
+  height: 2em;
 }
 
 .card:hover {

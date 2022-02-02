@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Task } from '../task.model';
+import { TaskState } from '../task-state.enum';
 
 @Component({
   selector: 'tb-task-card',
@@ -11,6 +12,7 @@ export class TaskCardComponent implements OnInit {
   @Output() deleteTask = new EventEmitter<string>();
   @Output() editTask = new EventEmitter<Task>();
   editMode = false;
+  taskState = TaskState;
 
   constructor() {}
 
@@ -26,5 +28,22 @@ export class TaskCardComponent implements OnInit {
 
   onUpdate(task: Task) {
     this.editTask.emit(task);
+  }
+
+  previousStage() {
+    this.getFutureStage(-1);
+  }
+
+  nextStage() {
+    this.getFutureStage(1);
+  }
+
+  private getFutureStage(step: number) {
+    const states = Object.values(this.taskState);
+    const idx = states.indexOf(this.task.state);
+    if (idx > -1 && idx < states.length) {
+      const nextStage = states[idx + step];
+      this.editTask.emit({ ...this.task, state: nextStage });
+    }
   }
 }

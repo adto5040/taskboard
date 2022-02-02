@@ -1,16 +1,16 @@
 <div class="container">
   <form [formGroup]="addTaskForm" (ngSubmit)="onSubmit()">
     <div class="form-field">
-      <label for="summary">Summary</label>
-      <input id="summary" type="text" formControlName="summary" />
+      <label for="title">Title*</label>
+      <input id="title" type="text" formControlName="title" />
     </div>
 
     <div class="form-field">
-      <label for="description">Description</label>
+      <label for="text">Description</label>
       <textarea
-        id="description"
+        id="text"
         type="text"
-        formControlName="description"
+        formControlName="text"
       ></textarea>
     </div>
 

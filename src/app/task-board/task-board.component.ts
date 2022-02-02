@@ -28,8 +28,8 @@ export class TaskBoardComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  onDelete(id: string) {
-    this.tasksService.deleteTask(id);
+  onDelete(guid: string) {
+    this.tasksService.deleteTask(guid);
   }
 
   onAdd(task: Task) {

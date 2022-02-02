@@ -12,21 +12,20 @@ export class TaskQuickAddComponent implements OnInit {
   @Output() addTask = new EventEmitter<Task>();
 
   addTaskForm = new FormGroup({
-    summary: new FormControl('', Validators.required),
-    description: new FormControl('', Validators.required)
+    title: new FormControl('', Validators.required),
+    text: new FormControl('')
   });
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   onSubmit() {
     if (this.addTaskForm.valid) {
       this.addTask.emit({
-        id: '',
-        description: this.addTaskForm.value.description,
-        summary: this.addTaskForm.value.summary,
+        guid: '',
+        text: this.addTaskForm.value.text,
+        title: this.addTaskForm.value.title,
         state: TaskState.TODO
       });
       this.addTaskForm.reset();

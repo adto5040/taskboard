@@ -7,38 +7,45 @@ import { Guid } from 'guid-typescript';
 @Injectable({
   providedIn: 'root'
 })
+export class OnlineTaskService {
+  API_URL = 'http://localhost:3000/api/tasks';
+}
+
+@Injectable({
+  providedIn: 'root'
+})
 export class TasksService {
   private initTasks = [
     {
-      summary: 'First TODO',
-      description: 'Test description',
+      title: 'First TODO',
+      text: 'Test text',
       state: TaskState.TODO,
-      id: Guid.raw()
+      guid: Guid.raw()
     },
     {
-      summary: 'Just do it',
-      description: 'Another test description',
+      title: 'Just do it',
+      text: 'Another test text',
       state: TaskState.TODO,
-      id: Guid.raw()
+      guid: Guid.raw()
     },
     {
-      summary: 'Just do it',
-      description: "I'm currently working on that",
+      title: 'Just do it',
+      text: "I'm currently working on that",
       state: TaskState.DOING,
-      id: Guid.raw()
+      guid: Guid.raw()
     },
     {
-      summary: 'Finish it',
-      description: 'This should be finished',
+      title: 'Finish it',
+      text: 'This should be finished',
       state: TaskState.DONE,
-      id: Guid.raw()
+      guid: Guid.raw()
     }
   ];
 
   // Functions that mutate the state/data aggregation
   private add = (task: Task) => (tasks: Task[]) => [...tasks, task];
-  private removeAtIndex = (id: string) => (tasks: Task[]) =>
-    tasks.filter(task => task.id !== id);
+  private removeAtIndex = (guid: string) => (tasks: Task[]) =>
+    tasks.filter(task => task.guid !== guid);
   private deleteAll = () => () => [];
 
   // Subject that represents the specific event
@@ -63,7 +70,7 @@ export class TasksService {
   }
 
   createTask(task: Task) {
-    this.add$$.next({ ...task, id: Guid.raw(), state: TaskState.TODO });
+    this.add$$.next({ ...task, guid: Guid.raw(), state: TaskState.TODO });
   }
 
   updateTask(task: Task) {
@@ -71,8 +78,8 @@ export class TasksService {
     console.log(task);
   }
 
-  deleteTask(id: string) {
-    this.removeAtIndex$$.next(id);
+  deleteTask(guid: string) {
+    this.removeAtIndex$$.next(guid);
   }
 
   deleteAllTasks() {

@@ -11,13 +11,12 @@ export class TaskCardComponent implements OnInit {
   @Output() deleteTask = new EventEmitter<string>();
   @Output() editTask = new EventEmitter<Task>();
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   onDelete() {
-    this.deleteTask.emit(this.task.id);
+    this.deleteTask.emit(this.task.guid);
   }
 
   onEdit() {

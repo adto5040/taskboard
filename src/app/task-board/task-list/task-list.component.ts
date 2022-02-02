@@ -18,8 +18,8 @@ export class TaskListComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  onDelete(id: string) {
-    this.deleteTask.emit(id);
+  onDelete(guid: string) {
+    this.deleteTask.emit(guid);
   }
 
   onEdit(task: Task) {

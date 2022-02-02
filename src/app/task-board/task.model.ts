@@ -6,3 +6,12 @@ export interface Task {
   text: string;
   state: TaskState;
 }
+
+export interface TaskServer {
+  guid: string;
+  title: string;
+  text: string;
+  isFavorite: boolean;
+  isInProgress: boolean;
+  isComplete: boolean;
+}

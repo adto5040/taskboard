@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Task } from './task.model';
+import { Task, TaskServer } from './task.model';
 import { TaskState } from './task-state.enum';
 import {
   map,
@@ -8,7 +8,8 @@ import {
   scan,
   shareReplay,
   startWith,
-  Subject
+  Subject,
+  switchMap
 } from 'rxjs';
 import { Guid } from 'guid-typescript';
 import { HttpClient } from '@angular/common/http';
@@ -20,35 +21,76 @@ import { environment } from '../../environments/environment';
 export class OnlineTaskService {
   constructor(private http: HttpClient) {}
 
-  getTasks$() {
-    return this.http.get(environment.API_URL);
+  private getTasksObservable$: Observable<Task[]> = this.http
+    .get<TaskServer[]>(environment.API_URL)
+    .pipe(
+      map((tasks: TaskServer[]) => {
+        return tasks.map((task: TaskServer) => {
+          let state = TaskState.TODO;
+          if (task.isInProgress) state = TaskState.DOING;
+          else if (task.isComplete) state = TaskState.DONE;
+          return {
+            guid: task.guid,
+            title: task.title,
+            text: task.text,
+            state: state
+          };
+        });
+      })
+    );
+
+  private tasksChanged$$ = new Subject<void>();
+
+  private tasks$ = this.tasksChanged$$.pipe(
+    switchMap(() => {
+      return this.getTasksObservable$;
+    })
+  );
+
+  getTasks$(): Observable<Task[]> {
+    return this.tasks$.pipe(shareReplay({ bufferSize: 1, refCount: true }));
   }
 
   createTask(task: Task) {
-    console.log(task);
-    //this.add$$.next({ ...task, guid: Guid.raw(), state: TaskState.TODO });
+    this.http
+      .post(environment.API_URL, {
+        guid: Guid.raw(),
+        title: task.title,
+        text: task.text,
+        isComplete: false,
+        isInProgress: false,
+        isFavorite: true
+      })
+      .subscribe(() => this.tasksChanged$$.next());
   }
 
   updateTask(task: Task) {
-    // - TODO
-    console.log(task);
-    // const oldtasks = [...tasks];
-    // oldtasks[idx] = task;
+    this.http
+      .put(environment.API_URL, {
+        guid: task.guid,
+        title: task.title,
+        text: task.text,
+        isFavorite: task.state === TaskState.TODO,
+        isInProgress: task.state === TaskState.DOING,
+        isComplete: task.state === TaskState.DONE
+      })
+      .subscribe(() => this.tasksChanged$$.next());
   }
 
   deleteTask(guid: string) {
-    console.log(guid);
-    //this.removeAtIndex$$.next(guid);
+    this.http
+      .delete(environment.API_URL + '/' + guid)
+      .subscribe(() => this.tasksChanged$$.next());
   }
 
   deleteAllTasks() {
-    //this.deleteAll$$.next();
+    console.log('This method is not implemented!');
   }
 }
 
 @Injectable({
-  providedIn: 'root'
-  //useExisting: OnlineTaskService
+  providedIn: 'root',
+  useExisting: OnlineTaskService
 })
 export class TasksService {
   private initTasks = [

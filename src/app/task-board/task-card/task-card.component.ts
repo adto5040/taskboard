@@ -27,6 +27,7 @@ export class TaskCardComponent implements OnInit {
   }
 
   onUpdate(task: Task) {
+    this.editMode = false;
     this.editTask.emit(task);
   }
 

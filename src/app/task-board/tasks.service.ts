@@ -41,14 +41,14 @@ export class OnlineTaskService {
 
   private tasksChanged$$ = new Subject<void>();
 
-  private tasks$ = this.tasksChanged$$.pipe(
-    switchMap(() => {
-      return this.getTasksObservable$;
-    })
-  );
-
   getTasks$(): Observable<Task[]> {
-    return this.tasks$.pipe(shareReplay({ bufferSize: 1, refCount: true }));
+    return this.tasksChanged$$.pipe(
+      startWith('just trigger init subject'),
+      switchMap(() => {
+        return this.getTasksObservable$;
+      }),
+      shareReplay({ bufferSize: 1, refCount: true })
+    );
   }
 
   createTask(task: Task) {

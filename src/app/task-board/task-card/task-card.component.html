@@ -1,4 +1,4 @@
-<div class="card" [ngClass]="{ active: editMode }">
+<div class="card" [ngClass]="{ active: editMode }" *ngIf='task'>
   <div class="cross" (click)="onDelete()">X</div>
   <div class="show" *ngIf="!editMode">
     <div class="content" (click)="onSelect()">

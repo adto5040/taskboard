@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { TaskState } from './task-state.enum';
-import { map, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { TasksService } from './tasks.service';
 import { Task } from './task.model';
+import { filterState } from './task-board.functions';
 
 @Component({
   selector: 'tb-task-board',
@@ -14,13 +15,13 @@ export class TaskBoardComponent implements OnInit {
 
   tasks$: Observable<Task[]> = this.tasksService.getTasks$();
   tasksTodo$: Observable<Task[]> = this.tasks$.pipe(
-    this.filterState(TaskState.TODO)
+    filterState(TaskState.TODO)
   );
   tasksDoing$: Observable<Task[]> = this.tasks$.pipe(
-    this.filterState(TaskState.DOING)
+    filterState(TaskState.DOING)
   );
   tasksDone$: Observable<Task[]> = this.tasks$.pipe(
-    this.filterState(TaskState.DONE)
+    filterState(TaskState.DONE)
   );
   TaskState = TaskState;
 
@@ -42,9 +43,5 @@ export class TaskBoardComponent implements OnInit {
 
   onDeleteAllTasks() {
     this.tasksService.deleteAllTasks();
-  }
-
-  private filterState(state: TaskState) {
-    return map((tasks: Task[]) => tasks.filter(task => task.state === state));
   }
 }

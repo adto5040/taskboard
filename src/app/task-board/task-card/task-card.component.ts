@@ -8,7 +8,7 @@ import { TaskState } from '../task-state.enum';
   styleUrls: ['./task-card.component.scss']
 })
 export class TaskCardComponent implements OnInit {
-  @Input() task!: Task;
+  @Input() task?: Task;
   @Output() deleteTask = new EventEmitter<string>();
   @Output() editTask = new EventEmitter<Task>();
   editMode = false;
@@ -19,7 +19,9 @@ export class TaskCardComponent implements OnInit {
   ngOnInit(): void {}
 
   onDelete() {
-    this.deleteTask.emit(this.task.guid);
+    if (this.task) {
+      this.deleteTask.emit(this.task.guid);
+    }
   }
 
   onSelect() {
@@ -40,11 +42,13 @@ export class TaskCardComponent implements OnInit {
   }
 
   private getFutureStage(step: number) {
-    const states = Object.values(this.taskState);
-    const idx = states.indexOf(this.task.state);
-    if (idx > -1 && idx < states.length) {
-      const nextStage = states[idx + step];
-      this.editTask.emit({ ...this.task, state: nextStage });
+    if (this.task) {
+      const states = Object.values(this.taskState);
+      const idx = states.indexOf(this.task.state);
+      if (idx > -1 && idx < states.length) {
+        const nextStage = states[idx + step];
+        this.editTask.emit({ ...this.task, state: nextStage });
+      }
     }
   }
 }

@@ -14,6 +14,12 @@ import {
 import { Guid } from 'guid-typescript';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
+import {
+  add,
+  deleteAll,
+  removeAtIndex,
+  update
+} from './tasks-functions.service';
 
 @Injectable({
   providedIn: 'root'
@@ -120,23 +126,6 @@ export class TasksService {
     }
   ];
 
-  // Functions that mutate the state/data aggregation
-  private add = (task: Task) => (tasks: Task[]) => [...tasks, task];
-  private removeAtIndex = (guid: string) => (tasks: Task[]) =>
-    tasks.filter(task => task.guid !== guid);
-  private update = (task: Task) => (tasks: Task[]) => {
-    const idx = tasks.findIndex(t => t.guid === task.guid);
-    if (idx < 0) {
-      return [...tasks];
-    } else {
-      return tasks
-        .slice(0, idx)
-        .concat(task)
-        .concat(tasks.slice(idx + 1));
-    }
-  };
-  private deleteAll = () => () => [];
-
   // Subject that represents the specific event
   private add$$ = new Subject<Task>();
   private removeAtIndex$$ = new Subject<string>();
@@ -145,10 +134,10 @@ export class TasksService {
 
   private tasks$ = merge(
     // Applies the first (outer) mutate function to your event Subject
-    this.add$$.pipe(map(this.add)),
-    this.removeAtIndex$$.pipe(map(this.removeAtIndex)),
-    this.update$$.pipe(map(this.update)),
-    this.deleteAll$$.pipe(map(this.deleteAll))
+    this.add$$.pipe(map(add)),
+    this.removeAtIndex$$.pipe(map(removeAtIndex)),
+    this.update$$.pipe(map(update)),
+    this.deleteAll$$.pipe(map(deleteAll))
   ).pipe(
     // Applies the second (inner) mutate function to finally mutate and return your updated state
     scan((tasks: Task[], fn) => fn(tasks), this.initTasks),

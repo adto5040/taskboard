@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Task } from '../task.model';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { TaskState } from '../task-state.enum';
 
 @Component({
   selector: 'tb-task-edit',
@@ -8,7 +9,12 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./task-edit.component.scss']
 })
 export class TaskEditComponent implements OnInit {
-  @Input() task!: Task;
+  @Input() task: Task = {
+    guid: '',
+    text: '',
+    title: '',
+    state: TaskState.TODO
+  };
   @Output() cancel = new EventEmitter<void>();
   @Output() update = new EventEmitter<Task>();
 

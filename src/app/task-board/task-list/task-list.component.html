@@ -1,8 +1,11 @@
-<div class='container'>
-  <h2 class='center'>{{ state }}</h2>
-  <tb-task-card
-    *ngFor='let task of tasks$ | async'
-    [task]='task'
-    (deleteTask)='onDelete($event)'
-    (editTask)='onEdit($event)'></tb-task-card>
+<div class="container" [id]="state">
+  <h2 class="center">{{ state }}</h2>
+  <ng-container *ngIf="tasks$ | async as tasks">
+    <tb-task-card
+      *ngFor="let task of tasks"
+      [task]="task"
+      (deleteTask)="onDelete($event)"
+      (editTask)="onEdit($event)"
+    ></tb-task-card>
+  </ng-container>
 </div>

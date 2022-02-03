@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TaskEditComponent } from './task-edit.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 describe('TaskEditComponent', () => {
   let component: TaskEditComponent;
@@ -8,9 +9,9 @@ describe('TaskEditComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ TaskEditComponent ]
-    })
-    .compileComponents();
+      declarations: [TaskEditComponent],
+      imports: [ReactiveFormsModule]
+    }).compileComponents();
   });
 
   beforeEach(() => {

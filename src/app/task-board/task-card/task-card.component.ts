@@ -41,6 +41,12 @@ export class TaskCardComponent implements OnInit {
     this.getFutureStage(1);
   }
 
+  triggerFavorite() {
+    if (this.task) {
+      this.editTask.emit({ ...this.task, isFavorite: !this.task.isFavorite });
+    }
+  }
+
   private getFutureStage(step: number) {
     if (this.task) {
       const states = Object.values(this.taskState);

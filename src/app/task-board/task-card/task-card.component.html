@@ -1,8 +1,15 @@
-<div class="card" [ngClass]="{ active: editMode }" *ngIf='task'>
+<div class="card" [ngClass]="{ active: editMode }" *ngIf="task">
   <div class="cross" (click)="onDelete()">X</div>
   <div class="show" *ngIf="!editMode">
     <div class="content" (click)="onSelect()">
-      <h3>{{ task.title }}</h3>
+      <div class="header">
+        <i
+          class="material-icons icon"
+          *ngIf="task.isFavorite && task.state !== taskState.DONE"
+          >star</i
+        >
+        <h3>{{ task.title }}</h3>
+      </div>
       <p>{{ task.text }}</p>
     </div>
     <div
@@ -18,6 +25,13 @@
       (click)="nextStage()"
     >
       next stage
+    </div>
+    <div
+      class="stage favorite"
+      *ngIf="task.state !== taskState.DONE"
+      (click)="triggerFavorite()"
+    >
+      <i class="material-icons icon">star</i>
     </div>
   </div>
   <div class="edit" *ngIf="editMode">

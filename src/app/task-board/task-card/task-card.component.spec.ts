@@ -4,6 +4,7 @@ import { TaskCardComponent } from './task-card.component';
 import { TaskState } from '../task-state.enum';
 import { Task } from '../task.model';
 import { ReactiveFormsModule } from '@angular/forms';
+import { TaskEditComponent } from '../task-edit/task-edit.component';
 
 describe('TaskCardComponent', () => {
   let component: TaskCardComponent;
@@ -32,7 +33,7 @@ describe('TaskCardComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [TaskCardComponent],
+      declarations: [TaskCardComponent, TaskEditComponent],
       imports: [ReactiveFormsModule]
     }).compileComponents();
   });
@@ -66,5 +67,27 @@ describe('TaskCardComponent', () => {
     fixture.detectChanges();
     const h3 = fixture.nativeElement.querySelector('h3');
     expect(h3.textContent).toBe(component.task.title);
+  });
+
+  it('when click on task, it can be edited', () => {
+    component.task = todoTask;
+    fixture.detectChanges();
+    expect(component.editMode).toBeFalsy();
+
+    // Click on task
+    fixture.nativeElement.querySelector('.content').click();
+    fixture.detectChanges();
+    expect(component.editMode).toBeTruthy();
+  });
+
+  it('when a task is saved, the edit mode is automatically terminated', () => {
+    component.task = todoTask;
+    component.editMode = true;
+    fixture.detectChanges();
+    expect(component.editMode).toBeTruthy();
+
+    component.onUpdate(doneTask);
+    fixture.detectChanges();
+    expect(component.editMode).toBeFalsy();
   });
 });

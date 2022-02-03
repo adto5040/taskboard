@@ -26,6 +26,7 @@ export class TaskQuickAddComponent implements OnInit {
         guid: '',
         text: this.addTaskForm.value.text,
         title: this.addTaskForm.value.title,
+        isFavorite: false,
         state: TaskState.TODO
       });
       this.addTaskForm.reset();

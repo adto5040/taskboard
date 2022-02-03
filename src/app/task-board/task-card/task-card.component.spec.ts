@@ -12,18 +12,21 @@ describe('TaskCardComponent', () => {
     guid: '123',
     title: 'A Todo task',
     text: 'A simple todo description',
+    isFavorite: false,
     state: TaskState.TODO
   };
   const doingTask: Task = {
     guid: '125',
     title: 'A Doing task',
     text: 'A simple doing description',
+    isFavorite: true,
     state: TaskState.DOING
   };
   const doneTask: Task = {
     guid: '124',
     title: 'A Done task',
     text: 'A simple done description',
+    isFavorite: false,
     state: TaskState.DONE
   };
 

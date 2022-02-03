@@ -4,6 +4,7 @@ export interface Task {
   guid: string;
   title: string;
   text: string;
+  isFavorite: boolean;
   state: TaskState;
 }
 

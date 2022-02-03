@@ -39,6 +39,7 @@ export class OnlineTaskService {
             guid: task.guid,
             title: task.title,
             text: task.text,
+            isFavorite: task.isFavorite,
             state: state
           };
         });
@@ -65,7 +66,7 @@ export class OnlineTaskService {
         text: task.text,
         isComplete: false,
         isInProgress: false,
-        isFavorite: true
+        isFavorite: false
       })
       .subscribe(() => this.tasksChanged$$.next());
   }
@@ -76,7 +77,7 @@ export class OnlineTaskService {
         guid: task.guid,
         title: task.title,
         text: task.text,
-        isFavorite: task.state === TaskState.TODO,
+        isFavorite: task.isFavorite,
         isInProgress: task.state === TaskState.DOING,
         isComplete: task.state === TaskState.DONE
       })
@@ -99,30 +100,34 @@ export class OnlineTaskService {
   useExisting: OnlineTaskService
 })
 export class TasksService {
-  private initTasks = [
+  private initTasks: Task[] = [
     {
+      guid: Guid.raw(),
       title: 'First TODO',
       text: 'Test text',
-      state: TaskState.TODO,
-      guid: Guid.raw()
+      isFavorite: false,
+      state: TaskState.TODO
     },
     {
+      guid: Guid.raw(),
       title: 'Just do it',
       text: 'Another test text',
-      state: TaskState.TODO,
-      guid: Guid.raw()
+      isFavorite: true,
+      state: TaskState.TODO
     },
     {
+      guid: Guid.raw(),
       title: 'Just do it',
       text: "I'm currently working on that",
-      state: TaskState.DOING,
-      guid: Guid.raw()
+      isFavorite: true,
+      state: TaskState.DOING
     },
     {
+      guid: Guid.raw(),
       title: 'Finish it',
       text: 'This should be finished',
-      state: TaskState.DONE,
-      guid: Guid.raw()
+      isFavorite: false,
+      state: TaskState.DONE
     }
   ];
 

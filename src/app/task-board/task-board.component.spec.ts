@@ -24,6 +24,7 @@ describe('TaskBoardComponent', () => {
     guid: '',
     title: 'A New task',
     text: 'A simple todo description',
+    isFavorite: false,
     state: TaskState.DOING
   };
   let taskServiceSub: Partial<TasksService>;
@@ -76,37 +77,47 @@ describe('TaskBoardComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should create task', () => {
+  it('should create a task', () => {
     tasksService.createTask = jasmine.createSpy();
     component.onAdd(newTask);
     expect(tasksService.createTask).toHaveBeenCalledWith(newTask);
   });
 
+  it('should delete a task', () => {
+    tasksService.deleteTask = jasmine.createSpy();
+    component.onDelete('123');
+    expect(tasksService.deleteTask).toHaveBeenCalledWith('123');
+  });
+
   describe('test filter', () => {
-    const demoTasks = [
+    const demoTasks: Task[] = [
       {
+        guid: '1',
         title: 'First TODO',
         text: 'Test text',
-        state: TaskState.TODO,
-        guid: '1'
+        isFavorite: false,
+        state: TaskState.TODO
       },
       {
+        guid: '2',
         title: 'Just do it',
         text: 'Another test text',
-        state: TaskState.TODO,
-        guid: '2'
+        isFavorite: true,
+        state: TaskState.TODO
       },
       {
+        guid: '3',
         title: 'Just do it',
         text: "I'm currently working on that",
-        state: TaskState.DOING,
-        guid: '3'
+        isFavorite: true,
+        state: TaskState.DOING
       },
       {
+        guid: '4',
         title: 'Finish it',
         text: 'This should be finished',
-        state: TaskState.DONE,
-        guid: '4'
+        isFavorite: false,
+        state: TaskState.DONE
       }
     ];
 

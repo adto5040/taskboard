@@ -21,6 +21,37 @@ import {
   update
 } from './tasks-functions.service';
 
+export const initTasks: Task[] = [
+  {
+    guid: Guid.raw(),
+    title: 'First TODO',
+    text: 'Test text',
+    isFavorite: false,
+    state: TaskState.TODO
+  },
+  {
+    guid: Guid.raw(),
+    title: 'Just do it',
+    text: 'Another test text',
+    isFavorite: true,
+    state: TaskState.TODO
+  },
+  {
+    guid: Guid.raw(),
+    title: 'Just do it',
+    text: "I'm currently working on that",
+    isFavorite: true,
+    state: TaskState.DOING
+  },
+  {
+    guid: Guid.raw(),
+    title: 'Finish it',
+    text: 'This should be finished',
+    isFavorite: false,
+    state: TaskState.DONE
+  }
+];
+
 @Injectable({
   providedIn: 'root'
 })
@@ -100,37 +131,6 @@ export class OnlineTaskService {
   useExisting: OnlineTaskService
 })
 export class TasksService {
-  private initTasks: Task[] = [
-    {
-      guid: Guid.raw(),
-      title: 'First TODO',
-      text: 'Test text',
-      isFavorite: false,
-      state: TaskState.TODO
-    },
-    {
-      guid: Guid.raw(),
-      title: 'Just do it',
-      text: 'Another test text',
-      isFavorite: true,
-      state: TaskState.TODO
-    },
-    {
-      guid: Guid.raw(),
-      title: 'Just do it',
-      text: "I'm currently working on that",
-      isFavorite: true,
-      state: TaskState.DOING
-    },
-    {
-      guid: Guid.raw(),
-      title: 'Finish it',
-      text: 'This should be finished',
-      isFavorite: false,
-      state: TaskState.DONE
-    }
-  ];
-
   // Subject that represents the specific event
   private add$$ = new Subject<Task>();
   private removeAtIndex$$ = new Subject<string>();
@@ -145,8 +145,8 @@ export class TasksService {
     this.deleteAll$$.pipe(map(deleteAll))
   ).pipe(
     // Applies the second (inner) mutate function to finally mutate and return your updated state
-    scan((tasks: Task[], fn) => fn(tasks), this.initTasks),
-    startWith(this.initTasks)
+    scan((tasks: Task[], fn) => fn(tasks), initTasks),
+    startWith(initTasks)
   );
 
   constructor() {}
